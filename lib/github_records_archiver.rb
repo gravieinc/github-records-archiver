@@ -14,7 +14,7 @@ require 'octokit'
 require 'dotenv'
 
 # Configuration
-Dotenv.load
+Dotenv.load('env_vars.env')
 Octokit.auto_paginate = true
 
 module GitHubRecordsArchiver

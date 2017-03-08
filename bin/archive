@@ -30,11 +30,17 @@ log "Found #{org.teams.count} teams"
 Parallel.each(org.teams, progress: 'Archiving teams', &:archive)
 
 log "Found #{org.repos.count} repos"
-Parallel.each(org.repos, progress: 'Archiving repos') do |repo|
+org.repos.each do |repo|#(org.repos, progress: 'Archiving repos') do |repo|
   begin
     repo.clone
     repo.wiki.clone unless repo.wiki.nil?
-    Parallel.each(repo.issues, &:archive)
+    #Parallel.each(repo.issues, &:archive)
+    repo.issues.each do |issue|
+      begin
+        issue.archive
+        sleep 1
+      end
+    end
   rescue GitHubRecordsArchiver::GitError => e
     error "Failed to archive #{repo.name}"
     error e.message
